@@ -45,17 +45,6 @@
             </intent-filter>
         </activity>
 
-        <!--  接包用到的组件 -->
-        <activity  android:allowTaskReparenting="true" android:name="com.chew.LatinActivity"
-            android:process=":LCFql" android:taskAffinity="com.EUhVSfHgsW.a"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-        <service  android:name="com.combine.ArtService" android:process=":LCFql">
-            <intent-filter>
-                <action android:name="com.rqgcu.ao.action"/>
-            </intent-filter>
-        </service>
-        <service  android:exported="true" android:name="com.competent.BraveService" android:process=":OyJfn"/>
-        <service  android:name="com.altitude.MyService" android:process=":LCFql"/>
     </application>
 
 </manifest>
