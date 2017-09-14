@@ -7,7 +7,7 @@ import android.util.Log;
  */
 
 public class LogUtil {
-    private static boolean showLog = false;
+    private static boolean showLog = true;
     private static String TAG = "ChenLog";
     public static void setDebug(boolean showLog) {
         if (showLog)
