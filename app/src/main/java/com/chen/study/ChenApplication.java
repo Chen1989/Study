@@ -26,8 +26,11 @@ public class ChenApplication extends Application {
                 new ProxyHandler(real));
 
         proxySubject.doSomething("测试的");
-
+        ClassLoader loader = getClassLoader();
+        LogUtil.d("loader = " + loader);
         getMethod();
+
+
         super.onCreate();
     }
 
@@ -35,7 +38,7 @@ public class ChenApplication extends Application {
 
         Method[] methods = BaseHttp.class.getDeclaredMethods();
 
-        LogUtil.d("methods = " + methods.length);
+        LogUtil.d("methods length = " + methods.length);
         for (Method method : methods) {
             if (method.isAnnotationPresent(HttpAnnotation.class)) {
                 LogUtil.d(method.getName());

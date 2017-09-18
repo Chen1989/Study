@@ -25,6 +25,7 @@
         android:layout_height="wrap_content" />
 
     <com.chen.study.materialTextField.MaterialTextField
+        android:id="@+id/material_text_field"
         android:layout_below="@id/btn_download"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -54,5 +55,13 @@
             android:textSize="15sp" />
 
     </com.chen.study.materialTextField.MaterialTextField>
+
+    <ImageView
+        android:id="@+id/iv_plugin"
+        android:src="@drawable/test47"
+        android:layout_below="@id/material_text_field"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>
