@@ -10,12 +10,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.chen.study.download.DownloadUtils;
+import com.chen.study.pluginRes.PluginActivityManager;
 import com.chen.study.pluginRes.ResourceBean;
 import com.chen.study.pluginRes.ResourceManager;
 
 public class MainActivity extends Activity {
     private Button downLoadBtn;
     private ImageView imageView;
+    private PluginActivityManager pluginActivityManager = PluginActivityManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +28,7 @@ public class MainActivity extends Activity {
         downLoadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadUninstalledBundle(v);
+                loadUninstalledBundle();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -37,21 +39,35 @@ public class MainActivity extends Activity {
             }
         });
         Log.d("MainActivity", "path = " + Environment.getExternalStorageDirectory().getAbsolutePath());
-        ResourceManager.init(getApplicationContext());
+        ResourceManager.init(this);
+        pluginActivityManager.init(this);
 //        Looper.prepare();
     }
 
     /**
      * 加载未安装APK资源
      *
-     * @param view
+     *
      */
-    public void loadUninstalledBundle(View view) {
-        ResourceBean loadResource = ResourceManager.unInstalled().loadResource("/sdcard/StartActivity.apk");
+    public void loadUninstalledBundle() {
+        ResourceBean loadResource = ResourceManager.unInstalled().loadResource("/sdcard/start.apk");
         Drawable drawable = ResourceManager.unInstalled().getDrawable(loadResource.packageName, "pic1");
         if (drawable != null) {
             imageView.setImageDrawable(drawable);
         }
     }
 
+    /**
+     * 加载未安装的APK的Activity
+     *
+     *
+     */
+    public void loadUninstalledActivity() {
+        PluginActivityManager.getInstance()
+                .startActivity("com.example.plugin.MainActivity", "sdcard/StartActivity.apk");
+    }
+
 }
+
+
+//header url paramer path body

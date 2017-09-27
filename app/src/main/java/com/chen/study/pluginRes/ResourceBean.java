@@ -2,6 +2,8 @@ package com.chen.study.pluginRes;
 
 import android.content.res.Resources;
 
+import dalvik.system.DexClassLoader;
+
 /**
  * Created by PengChen on 2017/9/18.
  */
@@ -9,5 +11,5 @@ import android.content.res.Resources;
 public class ResourceBean {
     public Resources resources;
     public String packageName;
-    public ClassLoader classLoader;
+    public DexClassLoader classLoader;
 }
