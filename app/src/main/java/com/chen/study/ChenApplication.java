@@ -2,6 +2,11 @@ package com.chen.study;
 
 import android.app.Application;
 
+import com.chen.study.demoHttpAnnotation.ChenBookApi;
+import com.chen.study.demoHttpAnnotation.ChenBuilder;
+import com.chen.study.demoHttpAnnotation.ChenHttpService;
+import com.chen.study.demoHttpAnnotation.ChenInterceptor;
+import com.chen.study.demoHttpAnnotation.ChenMethodContext;
 import com.chen.study.demoHttpAnnotation.HttpAnnotation;
 import com.chen.study.dynamicProxy.IChenSubject;
 import com.chen.study.dynamicProxy.ProxyHandler;
@@ -30,6 +35,13 @@ public class ChenApplication extends Application {
         LogUtil.d("loader = " + loader);
         getMethod();
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                testHttpAnnotation();
+            }
+        }).start();
+
 
         super.onCreate();
     }
@@ -44,5 +56,20 @@ public class ChenApplication extends Application {
                 LogUtil.d(method.getName());
             }
         }
+    }
+
+    private void testHttpAnnotation() {
+        ChenBookApi api= ChenBuilder.builder(ChenBookApi.class,new ChenHttpService().addInteropter(new ChenInterceptor() {
+            @Override
+            public void onInvokerBefore(ChenMethodContext context) {
+                System.out.println("onInvokerBefore");
+            }
+
+            @Override
+            public void onInvokerAfter(ChenMethodContext context) {
+                System.out.println("onInvokerAfter");
+            }
+        }));
+        System.out.println(api.search("image","abc"));
     }
 }
