@@ -7,7 +7,8 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.ClipDrawable;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,10 +24,10 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.chen.study.httpOk.HttpSample;
 import com.chen.study.pluginRes.PluginActivityManager;
 import com.chen.study.pluginRes.ResourceBean;
 import com.chen.study.pluginRes.ResourceManager;
-import com.chen.study.util.HookerPackageManager;
 import com.chen.study.util.InputSimulator;
 import com.chen.study.util.LogUtil;
 
@@ -64,10 +65,13 @@ public class MainActivity extends Activity {
                 Log.d("MainActivity", "Build.FINGERPRINT = ++++++++++++++");
             }
         });
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test47);
+//        bitmap = ImageProessUtil.convertToSketch(bitmap);
+        imageView.setImageBitmap(bitmap);
 //        ScaleDrawable scaleDrawable = (ScaleDrawable) imageView.getBackground();
 //        scaleDrawable.setLevel(2);
-        ClipDrawable scaleDrawable = (ClipDrawable) imageView.getDrawable();
-        scaleDrawable.setLevel(5000);
+//        ClipDrawable scaleDrawable = (ClipDrawable) imageView.getDrawable();
+//        scaleDrawable.setLevel(5000);
         downLoadBtn = (Button) findViewById(R.id.btn_download);
         downLoadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,12 +104,12 @@ public class MainActivity extends Activity {
                 }).start();
             }
         });
-        HookerPackageManager.hook(this, new HookerPackageManager.OnPkgManagerHooker() {
-            @Override
-            public void onMethod(String str) {
-                Log.d("MainActivity", "Sdk str.str = ++++++++++++++" + str);
-            }
-        });
+//        HookerPackageManager.hook(this, new HookerPackageManager.OnPkgManagerHooker() {
+//            @Override
+//            public void onMethod(String str) {
+//                Log.d("MainActivity", "Sdk str.str = ++++++++++++++" + str);
+//            }
+//        });
         Log.d("MainActivity", "path = " + Environment.getExternalStorageDirectory().getAbsolutePath());
 //        ResourceManager.init(this);
 //        pluginActivityManager.init(this);
@@ -120,8 +124,8 @@ public class MainActivity extends Activity {
 //        Thumbnails.of("").size()
 
 
-        getSignature();
-
+//        getSignature();
+        HttpSample.asynchronousHttpGet();
         Log.d("Sdk", " hasSystemFeature = " + getApplicationContext().getPackageManager().hasSystemFeature("android.hardware.type.television"));
     }
 

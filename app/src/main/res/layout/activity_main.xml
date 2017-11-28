@@ -58,10 +58,11 @@
 
     </com.chen.study.materialTextField.MaterialTextField>
 
+    <!--android:src="@drawable/layer_clip"-->
+    <!--android:background="@drawable/test47"-->
     <ImageView
         android:id="@+id/iv_plugin"
-        android:src="@drawable/layer_clip"
-        android:background="@drawable/layer_scale"
+
         android:layout_below="@id/material_text_field"
         android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
