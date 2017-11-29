@@ -1,6 +1,5 @@
-package com.chen.study;
+package com.chen.study.activity;
 
-import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +23,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.chen.study.R;
 import com.chen.study.httpOk.HttpSample;
 import com.chen.study.pluginRes.PluginActivityManager;
 import com.chen.study.pluginRes.ResourceBean;
@@ -84,7 +84,9 @@ public class MainActivity extends Activity {
                 Log.d("MainActivity", "Build.BRAND = " + Build.BRAND);
                 Log.d("MainActivity", "Build.DEVICE = " + Build.DEVICE);
                 Log.d("MainActivity", "Build.PRODUCT = " + Build.PRODUCT);
-                ObjectAnimator.ofFloat(imageView, "translationX", 0, 400).setDuration(300).start();
+                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+                startActivity(intent);
+//                ObjectAnimator.ofFloat(imageView, "translationX", 0, 400).setDuration(300).start();
 //                ValueAnimator animator = ValueAnimator.ofInt(0,1).setDuration(400);
 //                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 //                    @Override

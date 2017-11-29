@@ -1,6 +1,7 @@
 package com.chen.study;
 
 import android.app.Application;
+import android.content.Intent;
 
 import com.chen.study.demoHttpAnnotation.ChenBookApi;
 import com.chen.study.demoHttpAnnotation.ChenBuilder;
@@ -8,14 +9,11 @@ import com.chen.study.demoHttpAnnotation.ChenHttpService;
 import com.chen.study.demoHttpAnnotation.ChenInterceptor;
 import com.chen.study.demoHttpAnnotation.ChenMethodContext;
 import com.chen.study.demoHttpAnnotation.HttpAnnotation;
-import com.chen.study.dynamicProxy.IChenSubject;
-import com.chen.study.dynamicProxy.ProxyHandler;
-import com.chen.study.dynamicProxy.RealChenSubject;
 import com.chen.study.net.BaseHttp;
+import com.chen.study.test.Hooker;
 import com.chen.study.util.LogUtil;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -31,25 +29,16 @@ public class ChenApplication extends Application {
 
     @Override
     public void onCreate() {
-        RealChenSubject real = new RealChenSubject();
-        IChenSubject proxySubject = (IChenSubject) Proxy.newProxyInstance(IChenSubject.class.getClassLoader(),
-                new Class[]{IChenSubject.class},
-                new ProxyHandler(real));
-
-        proxySubject.doSomething("测试的");
-        ClassLoader loader = getClassLoader();
-        LogUtil.d("loader = " + loader);
-//        getMethod();
-
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                testHttpAnnotation();
-//            }
-//        }).start();
-
-
+//        RealChenSubject real = new RealChenSubject();
+//        IChenSubject proxySubject = (IChenSubject) Proxy.newProxyInstance(IChenSubject.class.getClassLoader(),
+//                new Class[]{IChenSubject.class},
+//                new ProxyHandler(real));
+//
+//        proxySubject.doSomething("测试的");
+//        ClassLoader loader = getClassLoader();
+//        LogUtil.d("loader = " + loader);
         super.onCreate();
+        hookActivity();
     }
 
     public void getMethod() {
@@ -111,5 +100,16 @@ public class ChenApplication extends Application {
             }
         }));
         System.out.println(api.search("image","abc"));
+    }
+
+    private void hookActivity() {
+        Hooker.addHocker(new Hooker.OnActivityManagerHooker() {
+            @Override
+            public void onStartActivity(Intent intent, Hooker.Handle handle) {
+
+            }
+        });
+        Hooker.hookSystemHandler();
+        Hooker.hook();
     }
 }

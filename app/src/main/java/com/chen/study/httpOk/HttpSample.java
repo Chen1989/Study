@@ -31,8 +31,8 @@ public class HttpSample {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 LogUtil.d("测试使用的");
-                response.cacheResponse().toString();
-                response.networkResponse().toString();
+//                response.cacheResponse().toString();
+//                response.networkResponse().toString();
             }
         });
     }
