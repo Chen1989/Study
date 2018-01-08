@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +34,8 @@ import com.chen.study.util.LogUtil;
 
 import java.util.List;
 import java.util.Random;
+
+import okhttp3.CacheControl;
 
 public class MainActivity extends Activity {
     private Button downLoadBtn;
@@ -126,6 +129,7 @@ public class MainActivity extends Activity {
 //        Thumbnails.of("").size()
 
 
+        System.nanoTime();
 //        getSignature();
         HttpSample.asynchronousHttpGet();
         Log.d("Sdk", " hasSystemFeature = " + getApplicationContext().getPackageManager().hasSystemFeature("android.hardware.type.television"));

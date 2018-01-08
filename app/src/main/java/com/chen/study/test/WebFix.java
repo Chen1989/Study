@@ -73,9 +73,9 @@ public class WebFix {
         }
     }
 
-    public class ThreadPoolManager {
-        private ExecutorService executorService = Executors.newScheduledThreadPool(1);
-
-    }
+//    public class ThreadPoolManager {
+//        private ExecutorService executorService = Executors.newScheduledThreadPool(1);
+//
+//    }
 
 }

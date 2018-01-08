@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="vs_common_sock_color">#d1d1d1</color>
+    <color name="lightblack_text">#737373</color>
+    <color name="lightblue_common_text">#2cacfd</color>
+    <color name="bg_lightgrey_downloadmanage">#EAEAEA</color>
+    <color name="btn_blue">#3C90F6</color>
+    <color name="transparent">#00000000</color>
+    <color name="btn_blue_on">#197AF0</color>
+    <color name="search_tag_category">#666</color>
+    <color name="search_key_word">#646e85</color>
+    <color name="search_sep_line">#888</color>
+    <color name="bg_account_memory">#a8cdf9</color>
+    <color name="bg_account_grey">#f7f7f8</color>
+
+    <color name="bg_common_blue">#007aff</color>
+    <color name="green1">#00CC99</color>
+    <color name = "white_gray">#eee</color>
+    <color name="light_gray">#EBEBEB</color>
+    <color name="contents_text">#ff000000</color>
+    <color name="encode_view">#ffffffff</color>
+    <color name="help_button_view">#ffcccccc</color>
+    <color name="help_view">#ff404040</color>
+    <color name="possible_result_points">#c0ffff00</color>
+    <color name="result_image_border">#ffffffff</color>
+    <color name="result_minor_text">#ffc0c0c0</color>
+    <color name="result_points">#c000ff00</color>
+    <color name="result_text">#ffffffff</color>
+    <color name="result_view">#b0000000</color>
+    <color name="sbc_header_text">#ff808080</color>
+    <color name="sbc_header_view">#ffffffff</color>
+    <color name="sbc_list_item">#fffff0e0</color>
+    <color name="sbc_layout_view">#ffffffff</color>
+    <color name="sbc_page_number_text">#ff000000</color>
+    <color name="sbc_snippet_text">#ff4b4b4b</color>
+    <color name="share_text">#ff000000</color>
+    <color name="status_view">#50000000</color>
+    <color name="status_text">#ffffffff</color>
+    <color name="viewfinder_frame">#ff000000</color>
+    <color name="viewfinder_laser">#ffff0000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="res_code_scan_line">#ff804eaa</color>
+    <color name="res_code_scan_bg">#ff333333</color>
+    <color name="res_tab_text_default">#ff000000</color>
+    <color name="full_white">#FFFFFF</color>
+    <color name="white">#fff0f0f0</color>
+    <color name="res_local_color_empty_bg">#00ff0000</color>
+    <color name="res_local_color_empty_bg2">#00000000</color>
+    <color name="res_local_color_listview_default">#00000000</color>
+    <color name="res_local_color_btn_pressed">#ff9752af</color>
+    <color name="res_local_color_btn_default">#ffffffff</color>
+    <color name="res_local_color_listview_selected">#ffeee9ef</color>
+    <color name="res_local_color_listview_focused">#ffeee9ef</color>
+    <color name="res_local_color_listview_pressed">#ffeee9ef</color>
+    <color name="res_local_fly_bg">#fff8f8f8</color>
+    <color name="res_normal_blue">#ff8147ac</color>
+    <color name="res_local_color_gray">#ffa6a6a6</color>
+    <color name="res_local_color_light_gray">#fff8f8f8</color>
+    <color name="res_local_color_black">#ff000000</color>
+    <color name="res_local_color_white">#ffffffff</color>
+    <color name="res_local_color_purple">#ff9752af</color>
+    <color name="res_local_selector_blue_normal">#ff8b47ae</color>
+    <color name="res_local_selector_blue_pressed_normal">#ff6a3685</color>
+    <color name="resource_subscribe_detail_subtitle_txt_color">#ff666666</color>
+    <color name="resource_subscribe_detail_context_txt_color">#ff999999</color>
+    <color name="resource_subscribe_detail_btn_operate_txt_color">#ff8b47ae</color>
+    <color name="resource_subscribe_detail_btn_operate_txt_selected_color">#ff6d4279</color>
+    <color name="resource_subscribe_detail_album_item_btn_operate_txt_color_green">#ff73ac57</color>
+    <color name="resource_subscribe_detail_pay_result_success_msg_title_txt_color">#ff6ba54c</color>
+    <color name="resource_subscribe_detail_pay_result_fail_msg_title_txt_color">#ffd85656</color>
+    <color name="resource_notification_bg_color">#99000000</color>
+    <color name="res_list_font1">#ff666666</color>
+    <color name="res_img_tag_bg">#ff8b47ae</color>
+    <color name="res_list_font2">#ffcccccc</color>
+    <color name="pay_color">#ff6ba54c</color>
+    <color name="res_gridview_selector">#ffc3c5c8</color>
+    <color name="res_bg">#ffffffff</color>
+    <color name="pay_failure_color">#ffd85656</color>
+    <color name="charge_item_bg">#ff8e4ba7</color>
+    <color name="user_charge_tip_textcolor">#ff999999</color>
+    <color name="user_charge_amount_color">#ffff6633</color>
+    <color name="pay_mask_success_color">#ff77be66</color>
+    <color name="pay_mask_error_color">#ffb05050</color>
+    <color name="acc_hui">#ccc</color>
+    <color name="black">#ff000000</color>
+    <color name="black_cc">#88000000</color>
+    <color name="devname_offline">#ff505151</color>
+    <color name="devname_online">#ffffffff</color>
+    <color name="game_item_blow">#aa843c91</color>
+    <color name="live_item_blow">#bb151515</color>
+    <color name="res_tab_bg">#ffeeeeee</color>
+    <color name="res_tab_text_selected">#ff8b47ae</color>
+    <color name="res_detail_downbutton_text">#ff8b47ae</color>
+    <color name="res_detail_downing_text">#ff3a6226</color>
+    <color name="res_detail_live_tag_unplay">#ffff6666</color>
+    <color name="res_detail_live_tag_play">#ff73ac57</color>
+    <color name="res_detail_live_tag_endplay">#ff999999</color>
+    <color name="res_detail_live_unplaytxt_color">#ffffffff</color>
+    <color name="res_detail_live_playtxt_color">#ff8b47ae</color>
+    <color name="batterycolor">#ff821129</color>
+    <color name="resource_market_topic_detail_attend">#ffeeeeee</color>
+    <color name="resource_market_topic_detail_title">#ff000000</color>
+    <color name="resource_market_topic_detail_subtitle">#ff666666</color>
+    <color name="resource_market_topic_detail_frame_divider">#ff959595</color>
+    <color name="resource_market_res_detail_image_quality_selected_txt_color">#ff73ac57</color>
+    <color name="resource_market_res_detail_image_quality_no_selected_txt_color">#ff777777</color>
+    <color name="resource_market_res_detail_image_quality_disable_txt_color">#ffffffff</color>
+    <color name="resource_market_login_btn_normal">#ff8b47ae</color>
+    <color name="resource_market_login_btn_click">#ffffffff</color>
+    <color name="resource_market_network_dialog_tip">#ff666666</color>
+    <color name="resource_other_cacheclear_expandlistview_divide">#ffe1e1e1</color>
+    <color name="resource_other_cacheclear_type_title">#ff343434</color>
+    <color name="resource_other_cacheclear_type_size">#ffcccccc</color>
+    <color name="resource_other_cacheclear_type_bg">#fff7f7f7</color>
+    <color name="recource_other_cacheclear_top_title">#ffb4b4b4</color>
+    <color name="recource_other_cacheclear_item_title">#ff666666</color>
+    <color name="recource_other_cacheclear_activity_bottom_text">#ff8a47ae</color>
+    <color name="recource_other_cacheclear_activity_bottom_frame">#fff0f0f0</color>
+    <color name="resource_pubblico_default_dialog_title_txt_color">#ff00aeef</color>
+    <color name="resource_pubblico_default_dialog_txt_color">#ff2d4557</color>
+    <color name="acc_white">#ffffffff</color>
+    <color name="com_sina_weibo_sdk_blue">#ff3b5998</color>
+    <color name="com_sina_weibo_sdk_loginview_text_color">#ffffffff</color>
+    <color name="purple">#ff8b47ae</color>
+    <color name="purple_dark">#ff5e1f7f</color>
+    <color name="purple_press">#ff6b299e</color>
+    <color name="gray">#ff999999</color>
+    <color name="translate_bg">#88353535</color>
+    <color name="translate_black">#cc000000</color>
+    <color name="white_aa">#aaf0f0f0</color>
+    <color name="user_find_pwd_send_sms">#ff7c4b8a</color>
+    <color name="user_reg_sms_wait_bg">#ff706b72</color>
+    <color name="user_find_pwd_btn">#ff6d4279</color>
+    <color name="red">#ffff0000</color>
+    <color name="user_reg_login_tip">#fffc0000</color>
+    <color name="public_title_color">#ff8c827c</color>
+    <color name="ttv_tip_color">#aa303031</color>
+    <color name="share_txt_unfocused">#ff333333</color>
+    <color name="txt_color">#ff333333</color>
+    <color name="share_txt_focus">#ff995aad</color>
+    <color name="share_txt_unfocus">#ff994c99</color>
+    <color name="share_sava_pressed">#ffffffff</color>
+    <color name="share_sava_unpressed">#ff9a678f</color>
+    <color name="share_submit_pressed">#ffffffff</color>
+    <color name="share_submit_unpressed">#ff9a678f</color>
+    <color name="share_btn_unclick_bg">#fff3f3f3</color>
+    <color name="share_words_color">#ff8f8f8f</color>
+    <color name="share_idcode_error_tip_color">#ffc21c00</color>
+    <color name="share_tips">#ff696969</color>
+    <color name="share_line">#ffe4e4e4</color>
+    <color name="share_friends_words">#ff727272</color>
+    <color name="share_friends_submit_btn">#ff6c338a</color>
+    <color name="translucence">#99000000</color>
+    <color name="pubblico_play_dialog_button_bg">#881e1022</color>
+    <color name="share_long_click_bg">#ff763c94</color>
+    <color name="share_line_bg">#ffae7fc6</color>
+    <color name="share_time_bg">#ff9558b5</color>
+    <color name="pay_text_color">#ff339933</color>
+    <color name="xunzhang_line_normal">#ff8b47ae</color>
+    <color name="xunzhang_line_exception">#ffcc3333</color>
+    <color name="selector_blue_normal">#ff8b47ae</color>
+    <color name="selector_blue_pressed_normal">#ff6a3685</color>
+    <color name="selector_blue_pressed_constant_normal">#ff7138bd</color>
+    <color name="selector_red_normal">#ffbd3939</color>
+    <color name="selector_red_pressed_normal">#ff962d2d</color>
+    <color name="enter_text_color">#bf13082f</color>
+    <color name="user_req_sms_press_color">#ff361fc5</color>
+    <color name="blue_p">#ff361fc5</color>
+    <color name="fly_help_text_color">#ffdadada</color>
+    <color name="general_setting_line">#ffcccccc</color>
+    <color name="general_setting_line_select">#ff8e4ba7</color>
+    <color name="general_circle_color">#ffeeeeee</color>
+    <color name="main_tab_purple">#ff8b47ae</color>
+    <color name="main_tab_grey">#ff888888</color>
+    <color name="grey_bg">#20000000</color>
+    <color name="dark_grey_bg">#30000000</color>
+    <color name="pay_type_bg">#ffececec</color>
+    <color name="pubblico_default_dialog_title_txt_color">#ff00aeef</color>
+    <color name="pubblico_default_dialog_txt_color">#ff2d4557</color>
+    <color name="umeng_fb_color_btn_pressed">#80000000</color>
+    <color name="umeng_fb_color_btn_normal">#ff333333</color>
+    <color name="user_select_avatar_option_bg_normal_color">#ffffffff</color>
+    <color name="user_select_avatar_option_bg_pressed_color">#ffdcdcdc</color>
+    <color name="user_reg_pressed">#ff6a3787</color>
+    <color name="user_login_pressed">#ff713b8d</color>
+    <color name="user_loginfailed_tip">#ffcc0000</color>
+    <color name="user_login_editcolor">#ff666666</color>
+    <color name="user_login_forget_normal">#ff0042fe</color>
+    <color name="user_login_forget_pressed">#ff022ca5</color>
+    <color name="user_avatar_mask">#66b9e6</color>
+    <color name="progress_value">#007aff</color>
+    <color name="searchbox_hint">#a2a2a2</color>
+    <color name="cl_dialog_bg_content">#575757</color>
+    <color name="vr_store_setting_item_title_color">#333333</color>
+    <color name="vr_store_setting_item_desc_color">#999999</color>
+    <color name="list_item_divider">#AAA</color>
+    <color name="bg_circle_tips">#FF6100</color>
+
+    <!-- 观看历史 -->
+    <color name="color_browse_history_group_bg">#F5F5F5</color>
+    <color name="color_browse_history_list_bg">#ffffff</color>
+    <color name="color_browse_history_passed_time">#949AA6</color>
+    <color name="vs_history_list_bg">#F5F5F5</color>
+    <color name="vs_history_group_tag">#949aa6</color>
+
+    <!-- 2.0通用颜色 -->
+    <color name="vs_global_orange">#ff8c02</color>
+    <color name="vs_global_text_orange">#ff8c02</color>
+    <color name="vs_global_list_item_color">#33333333</color>
+    <color name="vs_global_text_blue">#2CACFD</color>
+    <color name="vs_global_text_black">#333</color>
+    <color name="vs_global_text_grey">#949aa6</color>
+    <color name="vs_global_line_grey">#868ea0</color>
+
+
+    <!-- 推荐 -->
+    <color name="vs_recommend_count_color">#ff6000</color>
+    <color name="vs_recommend_category_line_color">#F0F5F9</color>
+
+    <!-- 全景 -->
+    <color name="vs_panoramic_ranking_title_color">#8790a5</color>
+    <color name="vs_panoramic_category_color">#2cacfd</color>
+    <color name="vs_panoramic_footer_color">#d0d3da</color>
+
+    <!-- 应用 -->
+    <color name="vs_app_ranking_text_color">#333</color>
+
+    <color name="vs_store_feedback_count">#646e85</color>
+    <color name="vs_store_feedback_hint">#c8cdda</color>
+    <color name="vs_store_banner_fill_color">#36B0FD</color>
+
+
+    <color name="user_personinfo_v_color">#646e85</color>
+    <color name="user_personinfo_k_color">#8790a5</color>
+    <color name="bg_tip_top_login">#36B0FD</color>
+
+    <color name="vs_network_tip">#dcf4fa</color>
+
+    <!-- 下载管理 -->
+    <color name="black_downloadmanage_resname_text">#333</color>
+    <color name="lightgrey_downloadmanage_line">#e5e5e5</color>
+
+    <!--设置-->
+    <color name="item_name_text_color">#646e85</color>
+    <color name="cache_size_text_color">#949aa6</color>
+    <color name="no_cache_text_color">#a5adbd</color>
+    <color name="divide_bar_background">#f5f5f5</color>
+
+    <!-- 详情页 -->
+    <color name="grey_resource_detail_line">#c9cdd9</color>
+    <color name="black_resource_detail_group_title">#1092e4</color>
+    <color name="grey_resource_detail_introduce_text">#888</color>
+
+    <!--个人中心-->
+    <color name="vs_ic_bg_personal_normal">#ffffff</color>
+    <color name="vs_ic_bg_personal_pressed">#f6f6f6</color>
+
+    <!-- 详情页-->
+    <color name="vs_detail_comment_header_color">#333333</color>
+    <color name="vs_detail_comment_total_color">#888888</color>
+    <color name="vs_detail_comment_time_color">#888</color>
+    <color name="vs_detail_comment_name_color">#2bacfd</color>
+    <color name="vs_detail_comment_content_color"> #333</color>
+    <color name="vs_detail_comment_divider_color">#c9cdd9</color>
+    <color name="vs_detail_comment_hint_color">#c9cdd9</color>
+    <color name="vs_detail_comment_color">@android:color/black</color>
+    <color name="vs_detail_comment_num_color">#646e85</color>
+    <color name="vs_detail_comment_edit_hint_divider_color">#c7cdd9</color>
+    <color name="vs_detail_send_color">#fff</color>
+    <color name="vs_detail_comment_edit_divider_color">#29aefd</color>
+    <color name="vs_detail_comment_input_color">#333</color>
+
+
+    <!-- 透明背景色-->
+    <color name="vs_translucent_black_loading_bg">#65000000</color>
+    <color name="vs_translucent_white_loading_bg2">#FFffffff</color>
+
+    <color name="primary">#607D8B</color>
+    <color name="primary_dark">#455A64</color>
+    <color name="accent">#009688</color>
+    <color name="secondary_text">#727272</color>
+    <color name="icons">#FFFFFF</color>
+</resources>
