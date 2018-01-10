@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.chen.home.MainActivity">
@@ -12,6 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_test"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="#ffff0000"
+        android:dividerHeight="10dp">
+
+    </android.support.v7.widget.RecyclerView>
 
 
 </LinearLayout>

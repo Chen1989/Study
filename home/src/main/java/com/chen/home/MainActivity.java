@@ -2,25 +2,51 @@ package com.chen.home;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity {
+    private RecyclerView recyclerView;
+    private List<String> mDatas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        recyclerView = (RecyclerView)findViewById(R.id.recycler_view_test);
         Log.d("ChenSdk", "length = ");
+        initData();
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new RecyclerViewAdapter());
+//        recyclerView.addItemDecoration();
+    }
+
+    protected void initData()
+    {
+        mDatas = new ArrayList<String>();
+        for (int i = 0; i < 99999; i++)
+        {
+            mDatas.add("chen_" + i);
+        }
+    }
+
+    private void test() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -58,5 +84,35 @@ public class MainActivity extends Activity {
 
             }
         }).start();
+    }
+
+    public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
+
+        @Override
+        public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            RecyclerViewHolder holder = new RecyclerViewHolder(LayoutInflater.from(
+                    MainActivity.this).inflate(R.layout.recycler_view_item, parent,
+                    false));
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerViewHolder holder, int position) {
+            holder.tv_num.setText(mDatas.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return mDatas.size();
+        }
+    }
+
+    public class RecyclerViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView tv_num;
+        public RecyclerViewHolder(View itemView) {
+            super(itemView);
+            tv_num = (TextView)itemView.findViewById(R.id.tv_num);
+        }
     }
 }
