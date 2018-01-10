@@ -1,6 +1,8 @@
 package com.chen.home;
 
 import android.app.Activity;
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,7 +37,7 @@ public class MainActivity extends Activity {
         initData();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new RecyclerViewAdapter());
-//        recyclerView.addItemDecoration();
+        recyclerView.addItemDecoration(new RecyclerViewItemDecoration());
     }
 
     protected void initData()
@@ -97,8 +100,15 @@ public class MainActivity extends Activity {
         }
 
         @Override
-        public void onBindViewHolder(RecyclerViewHolder holder, int position) {
+        public void onBindViewHolder(RecyclerViewHolder holder, final int position) {
             holder.tv_num.setText(mDatas.get(position));
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i("holder", "AAAAAAAAAAAAA");
+                    Toast.makeText(MainActivity.this, "click item " + position, Toast.LENGTH_SHORT);
+                }
+            });
         }
 
         @Override
@@ -113,6 +123,23 @@ public class MainActivity extends Activity {
         public RecyclerViewHolder(View itemView) {
             super(itemView);
             tv_num = (TextView)itemView.findViewById(R.id.tv_num);
+        }
+    }
+
+    public class RecyclerViewItemDecoration extends RecyclerView.ItemDecoration {
+        @Override
+        public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+            super.onDraw(c, parent, state);
+        }
+
+        @Override
+        public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+            super.onDrawOver(c, parent, state);
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
         }
     }
 }
