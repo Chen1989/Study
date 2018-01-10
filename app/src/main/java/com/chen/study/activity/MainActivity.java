@@ -12,7 +12,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -29,13 +28,12 @@ import com.chen.study.httpOk.HttpSample;
 import com.chen.study.pluginRes.PluginActivityManager;
 import com.chen.study.pluginRes.ResourceBean;
 import com.chen.study.pluginRes.ResourceManager;
+import com.chen.study.receiver.NetworkReceiver;
 import com.chen.study.util.InputSimulator;
 import com.chen.study.util.LogUtil;
 
 import java.util.List;
 import java.util.Random;
-
-import okhttp3.CacheControl;
 
 public class MainActivity extends Activity {
     private Button downLoadBtn;
@@ -43,14 +41,22 @@ public class MainActivity extends Activity {
     private PluginActivityManager pluginActivityManager = PluginActivityManager.getInstance();
     private WebView webViewJs;
     private WindowManager manager;
+    private NetworkReceiver receiver;
 
     public void textClick(View view) {
 
     }
 
     @Override
+    protected void onDestroy() {
+        unregisterReceiver(receiver);
+        super.onDestroy();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        receiver = new NetworkReceiver();
 //        getWindow().getDecorView().setFitsSystemWindows(true);
 //        WindowManager.LayoutParams attrs = getWindow().getAttributes();
 //        attrs.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
@@ -58,7 +64,7 @@ public class MainActivity extends Activity {
 //        getWindow().setAttributes(attrs);
 //        //取消全屏设置
 //        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-
+        receiver = new NetworkReceiver();
         setContentView(R.layout.activity_main);
 
         imageView = (ImageView)findViewById(R.id.iv_plugin);
@@ -128,11 +134,99 @@ public class MainActivity extends Activity {
 //        Looper.prepare();
 //        Thumbnails.of("").size()
 
+        Binder binder = new Binder();
+        String tets = TEXT_SERVICES_MANAGER_SERVICE;
+        Intent intent;
+        Bundle bundle;
+//        bundle.putBinder("",new Binder());
+//        intent.putExtra("", bundle);
+//        registerReceiver()
 
         System.nanoTime();
 //        getSignature();
         HttpSample.asynchronousHttpGet();
         Log.d("Sdk", " hasSystemFeature = " + getApplicationContext().getPackageManager().hasSystemFeature("android.hardware.type.television"));
+
+        LogUtil.d("isNetworkAvailable = " + isNetworkAvailable(this));
+        registerReceiver(receiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+
+        test();
+    }
+
+    private void test() {
+        Intent intent = new Intent();
+        intent.putExtra("texts", "chen_joy");
+        intent.putExtra("sss", new byte[]{'c', 'b'});
+        byte[] result = intent.getByteArrayExtra("sss");
+        LogUtil.i("result === " + new String(result));
+    }
+
+
+    /**
+     * 获得sd卡剩余容量，即可用大小
+     *
+     * @return
+     */
+    private static long getSDAvailableSize(StatFs statFs)
+    {
+        long blockSize = statFs.getBlockSize();
+        long availableBlocks = statFs.getAvailableBlocks();
+        return blockSize * availableBlocks;
+    }
+
+    /**
+     * 获得SD卡总大小
+     *
+     * @return
+     */
+    private static long getSDTotalSize(StatFs statFs)
+    {
+        long blockSize = statFs.getBlockSize();
+        long totalBlocks = statFs.getBlockCount();
+        return blockSize * totalBlocks;
+    }
+
+    private static String getSdcardInfo()
+    {
+        String state = Environment.getExternalStorageState();
+        LogUtil.i( "startInstallTestApk state = " + state);
+        StringBuilder builder = new StringBuilder();
+        builder.append(state);
+        if (Environment.getExternalStorageDirectory() != null)
+        {
+            StatFs statFs = new StatFs(Environment.getExternalStorageDirectory().getPath());
+
+            if (Build.VERSION.SDK_INT >= 18)
+            {
+                builder.append(":" + (statFs.getFreeBytes() / 1024));
+                builder.append(":" + (statFs.getTotalBytes() / 1024));
+            }
+            else
+            {
+                builder.append(":" + (getSDAvailableSize(statFs) / 1024));
+                builder.append(":" + (getSDTotalSize(statFs) / 1024));
+            }
+        }
+
+        return builder.toString();
+    }
+
+    //网络是否可用
+    public static boolean isNetworkAvailable(Context context) {
+        String c = ConnectivityManager.CONNECTIVITY_ACTION;
+        ConnectivityManager connectivity = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo info = connectivity.getActiveNetworkInfo();
+            if (info != null && info.isConnected())
+            {
+                if (info.getState() == NetworkInfo.State.CONNECTED)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void getSignature() {

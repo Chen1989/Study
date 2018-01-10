@@ -29,3 +29,11 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+class Per {
+
+    def propertyMissing() {
+
+    }
+}
+
