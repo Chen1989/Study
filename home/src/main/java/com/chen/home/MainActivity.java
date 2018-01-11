@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -102,12 +101,15 @@ public class MainActivity extends Activity {
         @Override
         public void onBindViewHolder(RecyclerViewHolder holder, final int position) {
             holder.tv_num.setText(mDatas.get(position));
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.i("holder", "AAAAAAAAAAAAA");
-                    Toast.makeText(MainActivity.this, "click item " + position, Toast.LENGTH_SHORT);
-                }
+//            holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Log.i("holder", "AAAAAAAAAAAAA");
+//                    Toast.makeText(MainActivity.this, "click item " + position, Toast.LENGTH_SHORT).show();
+//                }
+//            });
+            holder.itemView.setOnClickListener(l -> {
+                Log.i("holder", "AAAAAAAAAAAAA");
             });
         }
 
