@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.chen.home.download.DownLoaderManger;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -37,6 +39,7 @@ public class MainActivity extends Activity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new RecyclerViewAdapter());
         recyclerView.addItemDecoration(new RecyclerViewItemDecoration());
+        testDownload();
     }
 
     protected void initData()
@@ -46,6 +49,18 @@ public class MainActivity extends Activity {
         {
             mDatas.add("chen_" + i);
         }
+    }
+
+    private void testDownload() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String name = "IFirstPlug";
+                String url = "http://192.168.1.157:7899/test/IFirstPlug";
+                DownLoaderManger.getInstance(getApplicationContext()).start(name, url, 1);
+            }
+        }).start();
+
     }
 
     private void test() {

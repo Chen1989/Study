@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.chen.study.R;
+import com.chen.study.download.DownLoadApkService;
 import com.chen.study.httpOk.HttpSample;
 import com.chen.study.pluginRes.PluginActivityManager;
 import com.chen.study.pluginRes.ResourceBean;
@@ -159,11 +160,15 @@ public class MainActivity extends Activity {
     }
 
     private void test() {
-        Intent intent = new Intent();
-        intent.putExtra("texts", "chen_joy");
-        intent.putExtra("sss", new byte[]{'c', 'b'});
-        byte[] result = intent.getByteArrayExtra("sss");
-        LogUtil.i("result === " + new String(result));
+        DownLoadApkService.getService().onCreate(getApplicationContext());
+        String url = "http://192.168.1.157:7899/test/IFirstPlug";
+        DownLoadApkService.startActionDownload(
+                getApplicationContext(), "IFirstPlug", url, 1, false);
+//        Intent intent = new Intent();
+//        intent.putExtra("texts", "chen_joy");
+//        intent.putExtra("sss", new byte[]{'c', 'b'});
+//        byte[] result = intent.getByteArrayExtra("sss");
+//        LogUtil.i("result === " + new String(result));
     }
 
 

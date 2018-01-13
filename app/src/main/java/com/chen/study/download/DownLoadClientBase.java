@@ -909,7 +909,7 @@ public abstract class DownLoadClientBase
             loaderTask.setPath(itemTask.getPath());
             loaderTask.getParams().put("ConnectTimeout", 1000 * 15);
             loaderTask.getParams().put("ReadTimeout", 1000 * 60);
-            loaderTask.getParams().put("IsOveride", false);
+            loaderTask.getParams().put("IsOverride", false);
 
             Set<Integer> resSet = new HashSet<Integer>()
             {
@@ -919,7 +919,7 @@ public abstract class DownLoadClientBase
                 }
             };
 
-            loaderTask.getParams().put("AccptCodes", resSet);
+            loaderTask.getParams().put("AcceptCodes", resSet);
 
             loaderTask.getHeaders().put("Range", String.format("bytes=%d-%d", itemTask.getBegin(), itemTask.getEnd()));
 

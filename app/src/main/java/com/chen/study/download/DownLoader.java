@@ -181,8 +181,7 @@ public abstract class DownLoader
         @Override
         public void download(final Task task, final IDownLoaderListener listener)
         {
-            new Thread(new Runnable()
-            {
+            new Thread(new Runnable() {
                 @Override
                 public void run()
                 {
@@ -225,7 +224,7 @@ public abstract class DownLoader
             }
 
             int code = connection.getResponseCode();
-            Set<Integer> resSet = task.param("AccptCodes", new HashSet<Integer>()
+            Set<Integer> resSet = task.param("AcceptCodes", new HashSet<Integer>()
             {
                 {
                     add(200);
@@ -249,7 +248,7 @@ public abstract class DownLoader
                 file.createNewFile();
             }
             OutputStream out;
-            if (task.param("IsOveride", true))
+            if (task.param("IsOverride", true))
                 out = new FileOutputStream(file);
             else
                 out = new FileOutputStream(file, true);

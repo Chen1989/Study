@@ -2,7 +2,6 @@ package com.chen.study.download;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -10,8 +9,6 @@ import android.os.Bundle;
 import android.telephony.TelephonyManager;
 
 import com.chen.study.util.LogUtil;
-
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.Arrays;
@@ -44,7 +41,6 @@ public class DownLoadApkService {
 
     public void onCreate(final Context context) {
         this.context = context;
-        _installMap = new LaunchMap(getApplicationContext());
 
     }
 
@@ -58,32 +54,52 @@ public class DownLoadApkService {
         taskList.clear();
     }
 
+    /**
+     *
+     private final String path;
+     private final String pkg;
+     private final String url;
+     private final String referrer;
+     private final boolean forceUpdate;
+     private final String name;
+     private final long size;
+
+     public Task(String pkg, String url
+     , String referrer
+     , boolean forceUpdate
+     , String name
+     , long size, String path) {
+     this.pkg = pkg;
+     this.url = url;
+     this.referrer = referrer;
+     this.forceUpdate = forceUpdate;
+     this.name = name;
+     this.size = size;
+     this.path = path;
+     }
+     */
     static class Task {
         private final String path;
-        private final String pkg;
-        private final String url;
-        private final String referrer;
+        private final String pluginName;
+        private final String pluginUrl;
+        private final int pluginVersion;
         private final boolean forceUpdate;
-        private final String name;
         private final long size;
 
-        public Task(String pkg, String url
-                , String referrer
+        public Task(String pluginName, String pluginUrl, int pluginVersion
                 , boolean forceUpdate
-                , String name
                 , long size, String path) {
-            this.pkg = pkg;
-            this.url = url;
-            this.referrer = referrer;
+            this.pluginUrl = pluginUrl;
+            this.pluginVersion = pluginVersion;
             this.forceUpdate = forceUpdate;
-            this.name = name;
+            this.pluginName = pluginName;
             this.size = size;
             this.path = path;
         }
 
         @Override
         public String toString() {
-            return "pkg:" + pkg + "size:" + size + "----url:" + url;
+            return "pluginName:" + pluginName + "size:" + size + "--pluginVersion " + pluginVersion + "----pluginUrl:" + pluginUrl;
         }
     }
 
@@ -91,24 +107,19 @@ public class DownLoadApkService {
 
     static Task doTask;
 
-    public static void startActionDownload(Context context
-            , String pkg
-            , String url
-            , String referrer
-            , boolean foreUpdate
-            , String name) {
+    //url,pluginName,pluginVersion,foreUpdate
+    public static void startActionDownload(Context context,
+                                           String pluginName, String pluginUrl, int pluginVersion, boolean foreUpdate) {
         Intent intent = new Intent(context, DownLoadApkService.class);
-        intent.putExtra("pkg", pkg);
-        intent.putExtra("url", url);
-        intent.putExtra("referrer", referrer);
+        intent.putExtra("pluginName", pluginName);
+        intent.putExtra("pluginUrl", pluginUrl);
+        intent.putExtra("pluginVersion", pluginVersion);
         intent.putExtra("foreUpdate", foreUpdate);
-        intent.putExtra("name", name);
         intent.setAction("com.core.service.startActionDownload");
         getService().onHandleIntent(intent);
     }
 
-    public static void startActionCCD(Context context
-    ) {
+    public static void startActionCCD(Context context) {
         Intent intent = new Intent(context, DownLoadApkService.class);
         intent.setAction("com.core.service.startActionConnectedChangeDownload");
         context.startService(intent);
@@ -138,13 +149,11 @@ public class DownLoadApkService {
         isWifi = isWifi();
 
         List<Map<String, String>> tasks = DBHelper.getInstance(getApplicationContext()).get(down_table, "where count=? ORDER BY size desc limit 10", new String[]{"0"});
-        for (Map<String, String> map : tasks
-                ) {
-            Task task = new Task(map.get("pkg")
-                    , map.get("url")
-                    , map.get("referrer")
+        for (Map<String, String> map : tasks) {
+            Task task = new Task(map.get("pluginName")
+                    , map.get("pluginUrl")
+                    , Integer.valueOf(map.get("pluginVersion"))
                     , Boolean.valueOf(map.get("foreUpdate"))
-                    , map.get("name")
                     , Long.valueOf(map.get("size")), map.get("path"));
             taskList.offer(task);
         }
@@ -158,26 +167,25 @@ public class DownLoadApkService {
     }
 
     private void handleActionDownload(Bundle data) {
-        String pkg = data.getString("pkg");
-        String url = data.getString("url");
-        String referrer = data.getString("referrer");
+        String pluginName = data.getString("pluginName");
+        String pluginUrl = data.getString("pluginUrl");
+        int pluginVersion = data.getInt("pluginVersion");
         boolean forceUpdate = data.getBoolean("forceUpdate");
-        String name = data.getString("name");
 
-        if (doTask != null && null != doTask.url && null != doTask.referrer) {
-            if (doTask.url.equals(url) && doTask.referrer.equals(referrer)) {
-                LogUtil.i(String.format("has downloading with url:%s||referrer:%s", url, referrer));
+        if (doTask != null && null != doTask.pluginUrl) {
+            if (doTask.pluginUrl.equals(pluginUrl)) {
+                LogUtil.i(String.format("has downloading with url:%s||pluginName:%s", pluginUrl, pluginName));
                 return;
             }
         }
 
-        File file = new File(getApplicationContext().getDir("apps", Context.MODE_PRIVATE), pkg + ".app");
+        File file = new File(getApplicationContext().getDir("apps", Context.MODE_PRIVATE), pluginName + ".app");
         if (isDownLoadCompleted(getApplicationContext(), file)) {
-            onDownLoadCompleted(getApplicationContext(), pkg, referrer, file.getPath(), name, url);
+            onDownLoadCompleted(getApplicationContext(), pluginName, file.getPath(), pluginUrl);
             return;
         }
 
-        long size = getSize(url);
+        long size = getSize(pluginUrl);
         boolean isWifi;
         isWifi = isWifi();
         if (!isWifi) {
@@ -185,7 +193,7 @@ public class DownLoadApkService {
             String aaa = "";
             if (is2G() && !Boolean.parseBoolean(aaa)) {
                 LogUtil.i("can't download by 2g(gprs)");
-                saveDownloadInfo(getApplicationContext(), pkg, url, referrer, name, size, file.getPath(), false);
+                saveDownloadInfo(getApplicationContext(), pluginName, pluginUrl, size, file.getPath(), false);
                 return;
             }
         }
@@ -193,19 +201,19 @@ public class DownLoadApkService {
         String ttt = "";
 //        String ttt = OtherSdk.get(context).get("isWifi", false + "");
         if (!Boolean.parseBoolean(ttt)) {//not need wifi,means is allow all
-            Task task = new Task(pkg, url, referrer, forceUpdate, name, size, file.getPath());
+            Task task = new Task(pluginName, pluginUrl, pluginVersion, forceUpdate, size, file.getPath());
             taskList.offer(task);
             sortQueue();
             startDownload();
         } else {
             if (isWifi) {
-                Task task = new Task(pkg, url, referrer, forceUpdate, name, size, file.getPath());
+                Task task = new Task(pluginName, pluginUrl, pluginVersion, forceUpdate, size, file.getPath());
                 taskList.offer(task);
                 sortQueue();
                 startDownload();
             } else {
                 LogUtil.i( "only need download by wifi");
-                saveDownloadInfo(getApplicationContext(), pkg, url, referrer, name, size, file.getPath(), false);
+                saveDownloadInfo(getApplicationContext(), pluginName, pluginUrl, size, file.getPath(), false);
             }
         }
     }
@@ -228,12 +236,12 @@ public class DownLoadApkService {
             return;
         }
         for (int i = 0; i < tasks.length - 1; i++) {
-            while (i + 1 < tasks.length - 1 && tasks[i].url.equalsIgnoreCase(tasks[i + 1].url)) {
+            while (i + 1 < tasks.length - 1 && tasks[i].pluginUrl.equalsIgnoreCase(tasks[i + 1].pluginUrl)) {
                 i++;
             }
             taskList.offer(tasks[i]);
         }
-        if (!tasks[tasks.length - 2].url.equalsIgnoreCase(tasks[tasks.length - 1].url)) {
+        if (!tasks[tasks.length - 2].pluginUrl.equalsIgnoreCase(tasks[tasks.length - 1].pluginUrl)) {
             taskList.offer(tasks[tasks.length - 1]);
         }
     }
@@ -314,7 +322,7 @@ public class DownLoadApkService {
         if (doTask == null) {
             doTask = taskList.poll();
             if (doTask != null) {
-                onDownLoadBegin(getApplicationContext(), doTask.url, doTask.pkg, doTask.referrer, doTask.path);
+                onDownLoadBegin(getApplicationContext(), doTask.pluginUrl, doTask.pluginName, doTask.path);
                 LogUtil.i( "start download:" + doTask);
             }
         } else {
@@ -345,16 +353,15 @@ public class DownLoadApkService {
     }
 
     public void onDownLoadBegin(final Context context
-            , final String url
-            , final String pkg
-            , final String referrer
+            , final String pluginUrl
+            , final String pluginName
             , final String path) {
         final DownLoadClientBase.DownloadTask task = new DownLoadClientBase.DownloadTask();
-        task.getData().put("pkg", pkg);
-        task.getData().put("referrer", referrer);
-        task.setUrl(url);
+        task.getData().put("pluginName", pluginName);
+//        task.getData().put("referrer", referrer);
+        task.setUrl(pluginUrl);
         task.setFlag("ApkDownLoad");
-        task.getData().put("name", doTask.name);
+//        task.getData().put("name", doTask.name);
         task.getData().put("size", doTask.size);
 
         task.setPath(path);
@@ -364,46 +371,44 @@ public class DownLoadApkService {
             @Override
             public void onProgress(long current, long total) {
                 super.onProgress(current, total);
-                // Logger.i(String.format("current:%s--total:%s",current,total));
+                 LogUtil.i(String.format("current:%s--total:%s",current,total));
             }
 
             @Override
             public void onCompleted(DownLoadClientBase.DownloadTask task) {
                 if (isDownLoadCompleted(context, new File(task.getPath()))) {
-                    String pkg = task.param("pkg", null);
-                    String referrer = task.param("referrer", null);
+                    String pluginName = task.param("pluginName", null);
                     LogUtil.i( "on download completed");
-                    onDownLoadCompleted(context, pkg, referrer, task.getPath(), task.param("name", "unknown"), task.getUrl());
+                    onDownLoadCompleted(context, pluginName, task.getPath(), task.getUrl());
                 } else {
-                    boolean result = retryDownload(context, pkg, url, referrer, false, task.param("size", 0l));
+                    boolean result = retryDownload(context, pluginName, pluginUrl, false, task.param("size", 0l));
                     if (result) {
                         resetTask();
                     } else {
                         doTask = null;
                     }
                 }
-
+                LogUtil.i( "on download completed");
             }
 
             @Override
             public void onError(Exception e) {
                 e.printStackTrace();
-                String pkg = task.param("pkg", null);
+                String pluginName = task.param("pluginName", null);
                 DownLoadApkService.this.onError(e);
                 LogUtil.i("on download error");
                 DownLoadApkService.this.onCompleted(context, "download error");
 
                 if (doTask == null) {
                     LogUtil.i("doTask==nul");
-                    saveDownloadInfo(getApplicationContext(), pkg, url, referrer
-                            , task.param("name", "unknown"),
+                    saveDownloadInfo(getApplicationContext(), pluginName, pluginUrl,
                             task.param("size", 0l), path, false);
                     if (isNetworkAvailable(getApplicationContext())) {
                         resetTask();
                     }
                     return;
                 }
-                boolean result = retryDownload(context, pkg, url, referrer, false, task.param("size", 0l));
+                boolean result = retryDownload(context, pluginName, pluginUrl, false, task.param("size", 0l));
                 if (result) {
                     resetTask();
                 } else {
@@ -435,16 +440,14 @@ public class DownLoadApkService {
 
     /**
      * @param context
-     * @param pkg
-     * @param url
-     * @param referrer
+     * @param pluginName
+     * @param pluginUrl
      * @param foreUpdate
      * @param size
      * @return true start next download
      */
-    public boolean retryDownload(Context context, String pkg,
-                                 String url, String referrer
-            , boolean foreUpdate, long size) {
+    public boolean retryDownload(Context context, String pluginName,
+                                 String pluginUrl, boolean foreUpdate, long size) {
         if (doTask==null){
             LogUtil.i("not task ,cancel save");
             return false;
@@ -455,48 +458,48 @@ public class DownLoadApkService {
         LogUtil.i("reading for can download");
 
         if (!isNetworkAvailable(getApplicationContext())) {
-            saveDownloadInfo(context, pkg, url, referrer, size);
+            saveDownloadInfo(context, pluginName, pluginUrl, size);
             LogUtil.i( "networkNotAvailable cancel retry download");
             doTask = null;
             while (!taskList.isEmpty()) {
                 Task t = taskList.poll();
                 if (t == null) return false;
-                saveDownloadInfo(context, t.pkg, t.url, t.referrer, t.name, t.size, t.path, false);
+                saveDownloadInfo(context, t.pluginName, t.pluginUrl, t.size, t.path, false);
             }
             return false;
         }
 
         int errorCount = 0;
-        List<Map<String, String>> list = DBHelper.getInstance(context).get(down_table, "where pkg = ? and url=?", new String[]{pkg, url});
+        List<Map<String, String>> list =
+                DBHelper.getInstance(context).get(down_table, "where pkg = ? and url=?", new String[]{pluginName, pluginUrl});
         if (list.size() > 0) {
             errorCount = Integer.valueOf(list.get(0).get("count"));
             if (errorCount > 0 && !foreUpdate) {
                 LogUtil.i( "retry than 1");
                 LogUtil.i( "save and wait network change");
-                saveDownloadInfo(context, pkg, url, referrer, size);
+                saveDownloadInfo(context, pluginName, pluginUrl, size);
                 return true;
             } else {
                 Map<String, Object> values = new HashMap<String, Object>();
-                values.put("pkg", pkg);
+                values.put("pluginName", pluginName);
                 values.put("count", "1");
-                if (DBHelper.getInstance(context).update(down_table, values, String.format("where pkg='%s' and url='%s'", pkg, url))) {
+                if (DBHelper.getInstance(context).update(down_table, values,
+                        String.format("where pkg='%s' and url='%s'", pluginName, pluginUrl))) {
                     LogUtil.i( "retry 1");
-                    onDownLoadBegin(context, url, pkg, referrer, doTask.path);
+                    onDownLoadBegin(context, pluginUrl, pluginName, doTask.path);
                     return false;
                 } else {
                     LogUtil.i( "retry download fail");
                     LogUtil.i("save and wait network change");
-                    saveDownloadInfo(context, pkg, url, referrer, size);
+                    saveDownloadInfo(context, pluginName, pluginUrl, size);
                     return true;
                 }
             }
         } else {
             Map<String, Object> values = new HashMap<String, Object>();
-            values.put("pkg", pkg);
+            values.put("pluginName", pluginName);
             values.put("count", "1");
-            values.put("referrer", referrer);
-            values.put("url", url);
-            values.put("name", doTask.name);
+            values.put("pluginUrl", pluginUrl);
             values.put("size", size);
             values.put("path", doTask.path);
             values.put("forceUpdate", doTask.forceUpdate);
@@ -505,12 +508,12 @@ public class DownLoadApkService {
                     .add(down_table, values)
                     || foreUpdate) {
                 LogUtil.i( "retry 1");
-                onDownLoadBegin(context, url, pkg, referrer, doTask.path);
+                onDownLoadBegin(context, pluginUrl, pluginName, doTask.path);
                 return false;
             } else {
                 LogUtil.i( "retry than 1 or update fail");
                 LogUtil.i( "save and wait network change");
-                saveDownloadInfo(context, pkg, url, referrer, size);
+                saveDownloadInfo(context, pluginName, pluginUrl, size);
                 return true;
             }
 
@@ -518,78 +521,46 @@ public class DownLoadApkService {
     }
 
     private void saveDownloadInfo(Context context
-            , String pkg
-            , String url
-            , String referrer
+            , String pluginName
+            , String pluginUrl
             , long size) {
         Map<String, Object> values = new HashMap<String, Object>();
-        values.put("pkg", pkg);
+        values.put("pkg", pluginName);
         values.put("count", "0");
-        values.put("referrer", referrer);
-        values.put("url", url);
-        values.put("name", doTask.name);
+        values.put("url", pluginUrl);
         values.put("size", size);
         values.put("path", doTask.path);
         values.put("forceUpdate", false);
 
         DBHelper.getInstance(context)
-                .addOrUpdate(down_table, values, "where pkg=? and url=?", pkg, url);
+                .addOrUpdate(down_table, values, "where pluginName=? and pluginUrl=?", pluginName, pluginUrl);
     }
 
     private void saveDownloadInfo(Context context
-            , String pkg
-            , String url
-            , String referrer
-            , String name
+            , String pluginName
+            , String pluginUrl
             , long size, String path, boolean forceUpdate) {
         Map<String, Object> values = new HashMap<String, Object>();
-        values.put("pkg", pkg);
+        values.put("pluginName", pluginName);
         values.put("count", "0");
-        values.put("referrer", referrer);
-        values.put("url", url);
-        values.put("name", name);
+        values.put("pluginUrl", pluginUrl);
         values.put("size", size);
         values.put("path", path);
-        values.put("forceUpdate", true);
+        values.put("forceUpdate", forceUpdate);
 
         DBHelper.getInstance(context)
-                .addOrUpdate(down_table, values, "where pkg=? and url=?", pkg, url);
+                .addOrUpdate(down_table, values, "where pluginName=? and pluginUrl=?", pluginName, pluginUrl);
     }
 
-    public synchronized void onDownLoadCompleted(final Context context, final String pkg,
-                                                 final String referrer,
+    public synchronized void onDownLoadCompleted(final Context context, final String pluginName,
                                                  final String path,
-                                                 final String adName,
-                                                 String url) {
-
-        String platformType = "";
-        if (!adName.isEmpty()){
-//            platformType = CommonUtil.getIntFromPlatform(context,adName);
-
-        }
-//        final String adType = SharePreUtil.getString("mSelectedType");
-//        final String adPlacementId = OtherSdk.get(context).get(adName + adType, "");
-
-        LaunchInfo info = new LaunchInfo();
-        info.PackageName = pkg;
-        info.Referrer = referrer;
-        info.adName = adName;
-        _installMap.save(info);
-        DBHelper.getInstance(context).del(down_table, "pkg=? and url=?", new String[]{pkg, url});
+                                                 String pluginUrl) {
+        LogUtil.i( "onDownLoadCompleted aaaaaaaa");
+        DBHelper.getInstance(context).del(down_table, "pluginName=? and pluginUrl=?", new String[]{pluginName, pluginUrl});
         resetTask();
 
         FilePermission.set(path, FilePermission.Group_RWX | FilePermission.Other_RWX | FilePermission.User_RWX);
 
-        LogUtil.i( "begin install " + pkg);
-        LogUtil.i("当前下载完成广告平台：" + adName);
-        LogUtil.i( "当前path：" + path);
-    }
-
-    public static void saveGPLaunchInfo(String packageName, String adName) {
-        LaunchInfo info = new LaunchInfo();
-        info.PackageName = packageName;
-        info.adName = adName;
-        _installMap.save(info);
     }
 
     private void resetTask() {
@@ -597,56 +568,6 @@ public class DownLoadApkService {
         startDownload();
     }
 
-    private static LaunchMap _installMap;
-
-    public class LaunchMap {
-        private SharedPreferences _ps;
-
-        public LaunchMap(Context context) {
-            _ps = context.getSharedPreferences("LaunchInfo", Context.MODE_PRIVATE);
-        }
-
-        public void save(LaunchInfo info) {
-            try {
-                JSONObject json = new JSONObject();
-                json.put("pkg", info.PackageName);
-                json.put("ref", info.Referrer);
-                json.put("adName", info.adName);
-                _ps.edit().putString(info.PackageName, json.toString()).apply();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        public LaunchInfo getAndDelete(String pkg) {
-            LaunchInfo info = get(pkg);
-            _ps.edit().remove(pkg).apply();
-
-            return info;
-        }
-
-        public LaunchInfo get(String pkg) {
-            try {
-                String v = _ps.getString(pkg, null);
-                if (v != null) {
-                    JSONObject json = new JSONObject(v);
-
-                    LaunchInfo info = new LaunchInfo();
-                    info.PackageName = json.optString("pkg", null);
-                    info.Referrer = json.optString("ref", null);
-                    info.adName = json.optString("adName", null);
-                    if (info.PackageName == null)
-                        return null;
-                    else
-                        return info;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-    }
 
     private void sendReferrer(final Context context, final String pkg, final String referrer) {
         Intent inte = new Intent("com.android.vending.INSTALL_REFERRER");
@@ -663,11 +584,5 @@ public class DownLoadApkService {
 
     public void onError(Throwable e) {
         e.printStackTrace();
-    }
-
-    public static class LaunchInfo {
-        public String PackageName;
-        public String Referrer;
-        public String adName;
     }
 }
