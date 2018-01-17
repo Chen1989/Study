@@ -12,7 +12,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -135,18 +134,6 @@ public class MainActivity extends Activity {
         url.lastIndexOf("/");
         url = url.substring(url.lastIndexOf("/") + 1);
         Log.d("MainActivity", "path url = " + url);
-        "".toLowerCase();
-//        loadApps();
-//        Looper.prepare();
-//        Thumbnails.of("").size()
-
-        Binder binder = new Binder();
-        String tets = TEXT_SERVICES_MANAGER_SERVICE;
-        Intent intent;
-        Bundle bundle;
-//        bundle.putBinder("",new Binder());
-//        intent.putExtra("", bundle);
-//        registerReceiver()
 
         System.nanoTime();
 //        getSignature();
@@ -155,8 +142,13 @@ public class MainActivity extends Activity {
 
         LogUtil.d("isNetworkAvailable = " + isNetworkAvailable(this));
         registerReceiver(receiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
-
-        test();
+        try {
+            String dir = getPackageManager().getApplicationInfo(getPackageName(), 0).sourceDir;
+            LogUtil.d("sourceDir = " + dir);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+//        test();
     }
 
     private void test() {
@@ -267,8 +259,6 @@ public class MainActivity extends Activity {
 
     /**
      * 加载未安装的APK的Activity
-     *
-     *
      */
     public void loadUninstalledActivity() {
         PluginActivityManager.getInstance()
