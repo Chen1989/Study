@@ -24,8 +24,9 @@ public class CanvasView extends View {
     private float pathX = 40;
     private float pathY = 500;
     Path path = new Path();
-    int dur = 180;
+    int dur = 0;
     ValueAnimator animator;
+    ValueAnimator animatorB;
 
     public CanvasView(Context context) {
         this(context, null);
@@ -49,8 +50,8 @@ public class CanvasView extends View {
 
 
         animator = new ValueAnimator();
-        animator.setIntValues(180, 540);
-        animator.setDuration(2000);
+        animator.setIntValues(0, 360);
+        animator.setDuration(5000);
         animator.setRepeatCount(-1);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -71,17 +72,24 @@ public class CanvasView extends View {
         canvas.drawPath(path, paint);
 
 //        p.setStyle(Paint.Style.STROKE);//设置空心
-
+        float finishX;
+        if (dur < 180) {
+            finishX = dur / 2;
+        } else {
+            finishX = (360 - dur) / 2;
+        }
+        LogUtil.i("dur = " + dur + ", finishX = " + finishX);
         float startCentreX =(float) ((100) * Math.cos(dur * Math.PI / 180)) + 250;
         float startCentreY =(float) ((100) * Math.sin(dur * Math.PI / 180)) + 250;
 
-        float finishCentreX =(float) ((100) * Math.cos((dur + dur % 360) * Math.PI / 180)) + 250;
-        float finishCentreY =(float) ((100) * Math.sin((dur + dur % 360) * Math.PI / 180)) + 250;
+        float finishCentreX =(float) ((100) * Math.cos((dur + finishX) * Math.PI / 180)) + 250;
+        float finishCentreY =(float) ((100) * Math.sin((dur + finishX) * Math.PI / 180)) + 250;
 
         canvas.drawCircle(startCentreX, startCentreY, 5, cPaint);
         canvas.drawCircle(finishCentreX, finishCentreY, 5, cPaint);
         RectF rectf=new RectF(150,150,350,350);
-        canvas.drawArc(rectf, dur, dur % 360, false, paint);
+        canvas.drawArc(rectf, dur, finishX, false, paint);
+        canvas.drawArc(rectf, 90, 30, false, paint);
     }
 
 
@@ -95,9 +103,19 @@ public class CanvasView extends View {
             return true;
         }
         if (event.getAction() == MotionEvent.ACTION_UP) {
-            pathX = 40;
-            pathY = 500;
+            animatorB = new ValueAnimator();
+            animatorB.setFloatValues(pathY, 500);
+            animatorB.setDuration(100);
+            animatorB.setRepeatCount(0);
+            animatorB.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    pathY = (float)animation.getAnimatedValue();
+                    invalidate();
+                }
+            });
             invalidate();
+            animatorB.start();
             animator.start();
         }
         return super.onTouchEvent(event);
