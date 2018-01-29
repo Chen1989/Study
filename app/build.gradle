@@ -35,52 +35,6 @@ android {
 //        }
 //    }
 
-//    splits {
-//        density {
-//
-//        }
-//
-//        abi {
-//
-//        }
-//    }
-}
-
-
-
-task parse{
-    doLast{
-        println 'ssssssssss'
-    }
-}
-
-afterEvaluate {
-    generateDebugSources.dependsOn parse
-}
-
-android.applicationVariants.whenObjectAdded { v ->
-
-    task([type: Jar], 'build' + v.name + 'Jar', {
-        group 'sdk'
-        dependsOn 'assemble' + v.name
-        from v.javaCompile.destinationDir
-        baseName 'sdk-' + v.name + '.jar'
-    })
-}
-
-
-configurations {
-    plg{
-
-    }
-
-    compile{
-
-    }
-}
-
-artifacts{
-
 }
 
 dependencies {
