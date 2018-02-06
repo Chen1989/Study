@@ -1,2 +1,2 @@
-include ':app', ':gradlestudy'
+include ':app', ':gradlestudy', ':javalib'
 include ':home'

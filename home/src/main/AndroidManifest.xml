@@ -27,6 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.ThirdActivity"/>
+        <receiver android:name=".receiver.ChenReceiver"/>
     </application>
 
 </manifest>
