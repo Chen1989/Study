@@ -5,7 +5,8 @@
     android:layout_height="match_parent">
     <Button
         android:id="@+id/btn_hook"
-        android:text="hookActivity"
+        android:text="HookActivity"
+        android:textAllCaps="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
