@@ -4,6 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.os.Binder;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -14,6 +19,8 @@ import com.chen.home.hook.ActivityHook;
 import com.chen.home.util.LogUtil;
 
 import okhttp3.Request;
+import com.chen.home.receiver.ChenReceiver;
+import com.chen.home.util.LogUtil;
 
 /**
  * Created by PengChen on 2018/1/17.
@@ -21,6 +28,7 @@ import okhttp3.Request;
 
 public class SecondActivity extends Activity {
     private Button btnHook;
+    private Context mContext;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,6 +36,9 @@ public class SecondActivity extends Activity {
         setContentView(R.layout.activity_second);
         btnHook = (Button)findViewById(R.id.btn_hook);
 //        ActivityHook.hookAcivity();
+//        ActivityHook.hookAcivity();
+        mContext = this;
+        mContext.getSystemService(Context.ACTIVITY_SERVICE);
         btnHook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,6 +62,21 @@ public class SecondActivity extends Activity {
                     }
                 });
                 builder.create().show();
+                btnHook.setY(200);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+//                        Intent intent = new Intent(mContext, ThirdActivity.class);
+                        ComponentName componentName = new ComponentName(mContext, ChenReceiver.class);
+                        ActivityInfo info = null;
+                        try {
+                            info = mContext.getPackageManager().getReceiverInfo(componentName, PackageManager.MATCH_DEFAULT_ONLY);
+                        } catch (PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        LogUtil.i("info = " + info.name);
+                    }
+                }).start();
             }
         });
         LogUtil.i("onCreate");
@@ -91,5 +117,8 @@ public class SecondActivity extends Activity {
     protected void onDestroy() {
         LogUtil.i("onDestroy");
         super.onDestroy();
+        int uid = Binder.getCallingUid();
+        int pid = Binder.getCallingPid();
+        LogUtil.i("uid = " + uid + ", pid = " + pid);
     }
 }

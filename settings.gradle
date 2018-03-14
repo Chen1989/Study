@@ -1,2 +1,3 @@
 include ':app', ':gradlestudy', ':algorithm'
+include ':app', ':gradlestudy', ':javalib'
 include ':home'

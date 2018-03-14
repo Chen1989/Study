@@ -53,6 +53,22 @@ task task3(dependsOn: [task1, task2]) << {
     println 'running unit tests #3'
 }
 
-task task4(dependsOn: [task1, task3]) << {
+task task4() << {
+
     println 'building the distribution #4'
+    def str = "hello test chen "
+    println str
+    repeat(str)
+    def concat1 = { String... args -> args.join('*') }
+    println project.rootDir
+
+    def dir = new File("D:\\workspace")
+    dir.eachFile { file ->
+        println file.name
+    }
+}
+
+
+def repeat(val){
+
 }
